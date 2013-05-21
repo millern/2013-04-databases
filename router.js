@@ -1,10 +1,8 @@
-var dataFile;
 var fs = require("fs");
 var db;
 
 module.exports = function(_db){
   db = _db;
-  dataFile = require("./dataFile.js")(db);
   return handler;
 };
 
