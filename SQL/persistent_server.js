@@ -36,4 +36,3 @@ var server = http.createServer(requestListener);
 console.log("Listening on http://" + ip + ":" + port);
 server.listen(port, ip);
 
-//exports.dbConnection.end();

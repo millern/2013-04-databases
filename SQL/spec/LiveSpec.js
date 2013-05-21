@@ -19,7 +19,7 @@ describe("Persistent Node Chat Server", function() {
     var tablename = 'messages';
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
-    dbConnection.query("DELETE FROM " + tablename);
+    dbConnection.query("DELETE FROM " + tablename,done);
     // dbConnection.query("DELETE FROM " + 'users');
     // dbConnection.query("DELETE FROM " + 'friends');
   });
@@ -77,6 +77,7 @@ describe("Persistent Node Chat Server", function() {
          * the message we just inserted: */
         request("http://127.0.0.1:8080/classes/messages",
           function(error, response, body) {
+            console.log(body);  
             var messageLog = JSON.parse(body);
             expect(messageLog[0].username).toEqual("Javert");
             expect(messageLog[0].message).toEqual("Men like you can never change!");

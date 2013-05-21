@@ -28,7 +28,14 @@ var routes = {
     method: function(request, response, target){
       headers['Content-Type'] = "application/json";
       response.writeHead(200, headers);
-      response.end(JSON.stringify(dataFile.getData(target)));
+        var query = "select * from messages";
+        db.query(query,function(error,results){
+          if (error) throw error;
+          console.log(results);
+          results = JSON.stringify(results);
+          //console.log(results);
+          response.end(results);
+        });
     }
   },
   {
@@ -71,15 +78,17 @@ var routes = {
         body += data;
       });
       request.on('end', function(data){
-        try{
-          dataFile.setData(target,JSON.parse(body));
-          response.writeHead(201, headers);
-        } catch (e) {
-          response.writeHead(400, headers);
-          console.log(e);
-        } finally {
-          response.end(JSON.stringify('\n'));
-        }
+        console.log(body);
+        body = JSON.parse(body);
+        console.log(body.username, " ",body.text);
+        response.writeHead(201, headers);
+        var query = "insert into messages (username, message, room) values (?, ?, ?)";
+        var queryArgs = [body.username, body.text, target];
+        db.query(query,queryArgs,function(error,results){
+          if (error) throw error;
+          console.log("1 row inserted into table messages");
+          response.end(JSON.stringify(""));
+        });
       });
      }
    },
